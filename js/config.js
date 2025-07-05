@@ -16,7 +16,7 @@ const SITE_CONFIG = {
     name: '莫凡影库',
     url: 'https://zx.plex.top',
     description: '莫凡影库在线观影平台',
-    logo: 'image/logo.png',
+    logo: 'image/logo1.png',
     version: '1.0.0'
 };
 
