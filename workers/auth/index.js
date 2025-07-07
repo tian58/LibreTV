@@ -1,4 +1,17 @@
 // workers/auth/index.js
+export default {
+  async fetch(request, env, ctx) {
+    // 数据库连接配置
+    const db = env.D1;
+    
+    // 示例：创建用户
+    const user = await db.execute(
+      `INSERT INTO users (username, password_hash, expires_at)
+       VALUES ($1, $2, $3)`,
+      [username, passwordHash, expiresAt]
+    );
+  }
+};
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
