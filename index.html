@@ -24,9 +24,9 @@
     if (response.ok) {
       const { token } = await response.json();
       localStorage.setItem("auth_token", token);
-      window.location.href = "/dashboard"; // 登录成功后跳转
+      window.location.href = "/index8.html"; // 登录成功后跳转
     } else {
-      alert("登录失败: " + await response.text());
+      alert("登录失败: " + await response.text(用户名密码错误，或者权限到期));
     }
   });
 </script>
