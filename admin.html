@@ -1,0 +1,58 @@
+<!-- admin.html -->
+<div class="container">
+  <h2>用户权限管理</h2>
+  
+  <div class="user-form">
+    <input type="text" id="username" placeholder="用户名">
+    <input type="date" id="validFrom" placeholder="开始日期">
+    <input type="date" id="validTo" placeholder="结束日期">
+    <button onclick="saveUserPermissions()">保存权限</button>
+  </div>
+  
+  <div class="user-list" id="userList"></div>
+</div>
+
+<script>
+  async function saveUserPermissions() {
+    const username = document.getElementById("username").value;
+    const validFrom = document.getElementById("validFrom").value;
+    const validTo = document.getElementById("validTo").value;
+    
+    // 调用管理API保存用户权限
+    const response = await fetch("/api/admin/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("admin_token")}`
+      },
+      body: JSON.stringify({ username, validFrom, validTo }),
+    });
+    
+    if (response.ok) {
+      alert("权限设置成功");
+      loadUsers();
+    } else {
+      alert("权限设置失败: " + await response.text());
+    }
+  }
+  
+  async function loadUsers() {
+    const response = await fetch("/api/admin/users", {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("admin_token")}`
+      }
+    });
+    
+    if (response.ok) {
+      const users = await response.json();
+      const userListElement = document.getElementById("userList");
+      
+      userListElement.innerHTML = users.map(user => `
+        <div class="user-item">
+          <div>${user.username}</div>
+          <div>有效期: ${user.validFrom} - ${user.validTo}</div>
+        </div>
+      `).join("");
+    }
+  }
+</script>
