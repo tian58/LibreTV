@@ -1,0 +1,38 @@
+<!-- public/admin/dashboard.html -->
+<table id="userTable">
+  <tr><th>用户名</th><th>状态</th><th>操作</th></tr>
+  <!-- 数据通过API动态加载 -->
+</table>
+
+<script>
+// 加载用户数据
+fetch('/api/users', {
+  headers: { 
+    'Authorization': localStorage.getItem('adminToken') 
+  }
+}).then(response => response.json())
+  .then(users => {
+    const tbody = document.querySelector('#userTable tbody');
+    users.forEach(user => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${user.username}</td>
+          <td>${user.status}</td>
+          <td>
+            ${user.status === 'blocked' ? 
+            `<button onclick="unblock(${user.id})">解封</button>` : 
+            `<button onclick="block(${user.id})">封禁</button>`}
+          </td>
+        </tr>
+      `;
+    });
+  });
+
+// 封禁/解封API
+async function block(userId) {
+  await fetch('/api/block', {
+    method: 'POST',
+    body: JSON.stringify({ userId })
+  });
+}
+</script>
