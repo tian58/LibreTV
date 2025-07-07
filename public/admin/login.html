@@ -1,0 +1,18 @@
+<!-- public/admin/login.html -->
+<form id="adminForm">
+  <input type="password" id="adminPass" placeholder="管理员密码" required>
+  <button type="submit">登录</button>
+</form>
+
+<script>
+document.getElementById('adminForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const password = document.getElementById('adminPass').value;
+  
+  // 简单验证（实际应使用更安全的方式）
+  if (password === 'admin123') {
+    localStorage.setItem('adminToken', btoa('admin-session'));
+    window.location.href = '/admin/dashboard';
+  }
+});
+</script>
