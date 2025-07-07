@@ -1,0 +1,32 @@
+<!-- login.html -->
+<form id="loginForm">
+  <input type="text" id="username" placeholder="用户名">
+  <input type="password" id="password" placeholder="密码">
+  <button type="submit">登录</button>
+</form>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    
+    // 生成简单设备指纹（实际应使用更复杂的方法）
+    const deviceId = "device_" + Math.random().toString(36).substring(2);
+    
+    const response = await fetch("https://auth-worker.your-username.workers.dev/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, deviceId }),
+    });
+    
+    if (response.ok) {
+      const { token } = await response.json();
+      localStorage.setItem("auth_token", token);
+      window.location.href = "/dashboard"; // 登录成功后跳转
+    } else {
+      alert("登录失败: " + await response.text());
+    }
+  });
+</script>
